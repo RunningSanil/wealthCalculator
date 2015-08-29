@@ -1,1 +1,39 @@
-test
+﻿<html>
+	<head>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+		<title>财富计算器</title>
+	</head>
+	<style type="text/css">
+	p{padding-left:20px; margin-left:20px;}
+	</style>
+	<body>
+		<div style="width:60%">
+			<h1>财富计算器</h1>
+			<p>本金: <input type="text" name="principal" /></p>
+			<p>收入: <input type="text" name="income" /></p>
+			<p>支出: <input type="text" name="pay" /></p>
+			<p>月留存: <input type="text" name="restMoney" /></p>
+			<p>年利率: <input type="text" name="rate" /></p>
+			<p>最高投资月份: <input type="text" name="month" /></p>
+			<p><input type="text" name="count" />个月后的资产: <b id="result"></b></p>
+		</div>
+		<script type="text/javascript" src="wc.js"></script>
+		<script type="text/javascript">
+			$(function(){
+				$("input").bind('input propertychange', function(){
+					var principal = parseFloat($("input[name=principal]").val());
+					var income = parseFloat($("input[name=income]").val());
+					var pay = parseFloat($("input[name=pay]").val());
+					var restMoney = parseFloat($("input[name=restMoney]").val());
+					var rate = parseFloat($("input[name=rate]").val());
+					var month = parseInt($("input[name=month]").val());
+					var count = parseInt($("input[name=count]").val());
+					if(income>0 && pay>0 && restMoney>0 && principal>0 && rate>0 && month>0 && count>0){
+						var wc = wc || new wealthCaculator(income,pay,restMoney,principal,rate,month);
+				    	$('#result').html(wc.getResultAfter(count));
+					}
+				});
+			});
+		</script>
+	</body>
+</html>
