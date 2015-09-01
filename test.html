@@ -8,7 +8,7 @@
 	input{width: 50px;}
 	</style>
 	<body>
-		<div style="width:100%">
+		<div style="float:left;width:40%">
 			<h1>财富计算器</h1>
 			<div>
 				<p>本金: <input type="text" name="principal" value="10000" /></p>
@@ -18,9 +18,17 @@
 				<p>年利率: <input type="text" name="rate" value="0.06" /></p>
 				<p>最多投:<input type="text" name="month" value="6" />个月</p>
 			</div>
-			<div><p style="width:100%"><input type="text" name="count" value="12" />个月后的资产: <b id="result">0</b>元  </p></div>
+			<div>
+				<p style="width:100%">
+					<select id="select_id">
+						<option value="DEBX">等额本息</option>
+						<option value="YCBX">一次本息</option>
+					</select>
+					<input type="text" name="count" value="12" />个月后的资产: <b id="result">0</b>元
+				</p>
+			</div>
 		</div>
-		<div style="float:left">
+		<div style="float:left;width:55%">
 			<table border="1"></table>
 		</div>
 		<script type="text/javascript" src="wc.js"></script>
@@ -60,8 +68,17 @@
 					var month = parseInt($("input[name=month]").val());
 					var count = parseInt($("input[name=count]").val());
 					if(income>0 && pay>0 && restMoney>0 && principal>0 && rate>0 && month>0 && count>0){
-						var wc = wc || new wealthCaculator(income,pay,restMoney,principal,rate,month);
-				    	$('#result').html(wc.getResultAfter(count,show));
+						var config = {};
+						config.principal = principal;
+						config.income = income;
+						config.pay = pay;
+						config.restMoney = restMoney;
+						config.rate = rate;
+						config.month = month;
+						config.count = count;
+						config.investWay = $("#select_id").val();
+						var wc = wc || new wealthCaculator(config);
+				    	$('#result').html(wc.getResultAfter(show,count).toFixed(2));
 					}
 				});
 			});
