@@ -4,21 +4,52 @@
 		<title>财富计算器</title>
 	</head>
 	<style type="text/css">
-	p{padding-left:20px; margin-left:20px;}
+	p{padding-left:20px; margin-left:20px; width:180px; float:left;}
+	input{width: 50px;}
 	</style>
 	<body>
-		<div style="width:60%">
+		<div style="width:100%">
 			<h1>财富计算器</h1>
-			<p>本金: <input type="text" name="principal" /></p>
-			<p>收入: <input type="text" name="income" /></p>
-			<p>支出: <input type="text" name="pay" /></p>
-			<p>月留存: <input type="text" name="restMoney" /></p>
-			<p>年利率: <input type="text" name="rate" /></p>
-			<p>最高投资月份: <input type="text" name="month" /></p>
-			<p><input type="text" name="count" />个月后的资产: <b id="result"></b></p>
+			<div>
+				<p>本金: <input type="text" name="principal" value="10000" /></p>
+				<p>月留存: <input type="text" name="restMoney" value="500" /></p>
+				<p>收入: <input type="text" name="income" value="11700" /></p>
+				<p>支出: <input type="text" name="pay" value="4500" /></p>
+				<p>年利率: <input type="text" name="rate" value="0.06" /></p>
+				<p>最多投:<input type="text" name="month" value="6" />个月</p>
+			</div>
+			<div><p style="width:100%"><input type="text" name="count" value="12" />个月后的资产: <b id="result">0</b>元  </p></div>
+		</div>
+		<div style="float:left">
+			<table border="1"></table>
 		</div>
 		<script type="text/javascript" src="wc.js"></script>
 		<script type="text/javascript">
+			function show(data){
+				$("table").html("");
+				var tr = "<tr><th>月份</th>"
+						+"<th>当月活钱</th>"
+						+"<th>当月工资</th>"
+						+"<th>年化利率</th>"
+						+"<th>次月收回</th>"
+						+"<th>本月支出</th>"
+						+"<th>当月留存</th>"
+						+"<th>投资金额</th>"
+						+"<th>投资期限</th></tr>";
+				$("table").append(tr);
+				data.forEach(function(e,i,a){
+					var tr = "<tr><td>"+(i+1)+"</td>"
+							+"<td>"+data[i].principal.toFixed(2)+"</td>"
+							+"<td>"+data[i].income.toFixed(2)+"</td>"
+							+"<td>"+(data[i].rate*100).toFixed(2)+"%</td>"
+							+"<td>"+data[i].allProfit.toFixed(2)+"</td>"
+							+"<td>"+data[i].pay.toFixed(2)+"</td>"
+							+"<td>"+data[i].restMoney.toFixed(2)+"</td>"
+							+"<td>"+data[i].investment.toFixed(2)+"</td>"
+							+"<td>"+data[i].month.toFixed(2)+"</td></tr>"
+					$("tbody").append(tr);
+				});
+			};
 			$(function(){
 				$("input").bind('input propertychange', function(){
 					var principal = parseFloat($("input[name=principal]").val());
@@ -30,7 +61,7 @@
 					var count = parseInt($("input[name=count]").val());
 					if(income>0 && pay>0 && restMoney>0 && principal>0 && rate>0 && month>0 && count>0){
 						var wc = wc || new wealthCaculator(income,pay,restMoney,principal,rate,month);
-				    	$('#result').html(wc.getResultAfter(count));
+				    	$('#result').html(wc.getResultAfter(count,show));
 					}
 				});
 			});
