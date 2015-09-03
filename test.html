@@ -23,6 +23,7 @@
 					<select id="select_id">
 						<option value="DEBX">等额本息</option>
 						<option value="YCBX">一次本息</option>
+						<option value="XXHB">先息后本</option>
 					</select>
 					<input type="text" name="count" value="12" />个月后的资产: <b id="result">0</b>元
 				</p>
@@ -59,7 +60,7 @@
 				});
 			};
 			$(function(){
-				$("input").bind('input propertychange', function(){
+				var updae = function(){
 					var principal = parseFloat($("input[name=principal]").val());
 					var income = parseFloat($("input[name=income]").val());
 					var pay = parseFloat($("input[name=pay]").val());
@@ -78,9 +79,11 @@
 						config.count = count;
 						config.investWay = $("#select_id").val();
 						var wc = wc || new wealthCaculator(config);
-				    	$('#result').html(wc.getResultAfter(show,count).toFixed(2));
+						$('#result').html(wc.getResultAfter(show,count).toFixed(2));
 					}
-				});
+				}
+				$("input").bind('input propertychange',updae);
+				$("select").change(updae);
 			});
 		</script>
 	</body>

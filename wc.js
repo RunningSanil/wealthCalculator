@@ -65,6 +65,13 @@ function wealthCaculator(config){
 			};
 			profit.push(YCBX(investment,_rate,_month));
 		}
+		else if(_investWay=="XXHB"){
+			var monthProfit = investment*_rate/12;
+			for (var i = 0; i < _month-1; i++) {
+				profit.push(monthProfit);
+			};
+			profit.push(monthProfit+investment);
+		}
 		_profitList.push(profit);
 	}
 	var getProfit = function(){//profit of this month
